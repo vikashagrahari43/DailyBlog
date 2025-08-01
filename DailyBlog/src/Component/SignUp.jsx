@@ -4,20 +4,21 @@ import { useNavigate , Link} from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import {Logo, Input, Button } from "./index"
 import auth from '../Appwrite/login'
-import {login as authlogin} from '../Store/LoginState'
+import {login} from '../Store/LoginState'
 
 function SignUp() {
     const [error, setError] = useState("")
     const {register, handleSubmit} = useForm()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const login = async(data) =>{
+
+    const create = async(data) =>{
         setError("")
         try {
            const userData = await auth.CreateAccount(data)
            if(userData){
            const userData = await auth.getCurrentUser()
-            if (userData) dispatch(authlogin(session))
+            if (userData) dispatch(login(userData))
                 navigate("/")
            }
         } catch (error) {
@@ -47,7 +48,7 @@ function SignUp() {
             {error && <p className="text-red-600 mt-8 text-center"> {error} </p>  }
         </div>
         <div>
-            <form onSubmit={handleSubmit(login)}>
+            <form onSubmit={handleSubmit(create)}>
                 <Input 
                 type="text"
                 label = "Name"

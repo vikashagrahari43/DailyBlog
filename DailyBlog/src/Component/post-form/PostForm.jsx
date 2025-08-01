@@ -8,62 +8,86 @@ import  postservice  from '../../Appwrite/post'
 function PostForm({post}) {
     const {handleSubmit, watch, getValues, setValue, register, control } = useForm({
         defaultValues : {
-            title : post?.title || " ",
-            slug : post?.$id || " ",
-            content : post?. content || " ",
+            title : post?.title || "",
+            slug : post?.$id || "",
+            content : post?. content || "",
             status : post?.status || "active"
-        }
+        },
     }); 
 
     const navigate = useNavigate()
     const userData = useSelector((state) => state.auth.userData)
 
+    const submit = async (data) => {
+  try {
+    let file = null;
+
+    // Upload image if provided
+    if (data.image && data.image[0]) {
+      file = await postservice.uploadFile(data.image[0]);
+    }
+
+    if (post) {
+      // If updating an existing post
+      if (file) {
+        await postservice.deleteFile(post.featuredImage);
+      }
+
+      const dbPost = await postservice.updatePost(post.$id, {
+        ...data,
+        featuredImage: file ? file.$id : post.featuredImage, // keep old image if no new file
+      });
+
+      if (dbPost) {
+        navigate(`/post/${dbPost.$id}`);
+      }
+    } else {
+      // If creating a new post
+      if (!file) {
+        alert("Please upload an image");
+        return;
+      }
+
+      const dbPost = await postservice.createPost({
+        ...data,
+        featuredImage: file.$id,
+        userid: userData.$id,
+        slug: slugTransform(data.title || "new-post"), // ensure slug always exists
+      });
+
+      if (dbPost) {
+        navigate(`/post/${dbPost.$id}`);
+      }
+    }
+  } catch (error) {
+    console.error("Error submitting post:", error);
+    alert("Something went wrong while submitting the post.");
+  }
+};
+
     const slugTransform = useCallback((value) =>{
-        if (value && typeof value === "string" ){
+        if (value && typeof value === "string" )
             return value
             .trim()
             .toLowerCase()
             .replace(/[^a-zA-Z\d\s]+/g, "-")
             .replace(/\s/g, "-")
-        }
+        
         return "";
     } , [])
-
+    
     useEffect(() =>{
         const subscription = watch((value, {name}) => {
             if(name === "title"){
-                setValue("slug" , slugTransform(value.slug),{shouldValidate : true} )
+                setValue("slug" , slugTransform(value.title),{shouldValidate : true} )
             }
         })
         return () => subscription.unsubscribe()
     }, [watch, setValue, slugTransform ])
 
-    const submit = async(data) =>{
-        if (post) {
-            const file = data.image[0] ? await postservice.uploadFile(data.image[0]) : null;
-            if (file){
-                postservice.deleteFile(post.featuredImage)
-            }
 
-            const dbPost = await postservice.updatePost(post.$id , {...data , 
-                featuredImage : file ? file.$id : undefined
-            })
-            if (dbPost) {
-                navigate(`/post/${dbPost.$id}`)
-            }
-        } else {
-            const file = await postservice.uploadFile(data.image[0])
-            if(file){
-                const fileId = file.$id
-                featuredImage = fileId
-                const dbPost = await postservice.createPost({...data , userId : userData.$id})
-                if (dbPost) {
-                navigate(`/post/${dbPost.$id}`)
-            }
-            }
-            
-        }
-    }
+
+    
   return (
    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
             <div className="w-2/3 px-2">
@@ -95,7 +119,7 @@ function PostForm({post}) {
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={postservice.getFilePreview(post.featuredImage)}
+                            src={postservice.filePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />
@@ -107,6 +131,7 @@ function PostForm({post}) {
                     className="mb-4"
                     {...register("status", { required: true })}
                 />
+                
                 <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
                     {post ? "Update" : "Submit"}
                 </Button>

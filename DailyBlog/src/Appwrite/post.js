@@ -16,7 +16,7 @@ export class post{
         
     }
 
-    async createPost({title,slug, content, featuredImage, status, userId}){
+    async createPost({title,slug, content, featuredImage, status, userid}){
             try {
                 return await this.database.createDocument(
                     Assets.DatabaseId , 
@@ -27,23 +27,26 @@ export class post{
                     content,
                     featuredImage,
                     status,
-                    userId
+                    userid
                             }
             )
             } catch (error) {
-                console.log(error)
+                console.log("Appwrite serive :: createPost :: error", error);
+                return null 
             }
     }
 
     async deletePost(slug){
         try {
-            return await this.database.deleteDocument(
+             await this.database.deleteDocument( /// return missing
                 Assets.DatabaseId,
                 Assets.CollectionId,
                 slug,
-            );
+            )
+            return true 
         } catch (error) {
             console.log(error)
+            return false 
         }
     }
 
@@ -76,6 +79,7 @@ export class post{
             )
         } catch (error) {
             console.log(error)
+            return false 
         }
     }
 
@@ -85,11 +89,12 @@ export class post{
             return await this.database.listDocuments(
                 Assets.DatabaseId,
                 Assets.CollectionId,
-                queries
+                queries,
                 
             )
         } catch (error) {
             console.log(error)
+            return false 
         }
     }
 
