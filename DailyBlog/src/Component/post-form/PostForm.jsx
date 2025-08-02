@@ -18,6 +18,8 @@ function PostForm({post}) {
     const navigate = useNavigate()
     const userData = useSelector((state) => state.auth.userData)
 
+    // console.log(post.featuredImage)
+
     const submit = async (data) => {
   try {
     let file = null;
@@ -36,6 +38,7 @@ function PostForm({post}) {
       const dbPost = await postservice.updatePost(post.$id, {
         ...data,
         featuredImage: file ? file.$id : post.featuredImage, // keep old image if no new file
+        username: userData?.name || post.username || "Anonymous",
       });
 
       if (dbPost) {
@@ -52,6 +55,7 @@ function PostForm({post}) {
         ...data,
         featuredImage: file.$id,
         userid: userData.$id,
+         username: userData?.name || "Anonymous", // ✅ add username here
         slug: slugTransform(data.title || "new-post"), // ensure slug always exists
       });
 
@@ -85,59 +89,155 @@ function PostForm({post}) {
         return () => subscription.unsubscribe()
     }, [watch, setValue, slugTransform ])
 
-
-
     
   return (
-   <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
-                <Input
-                    label="Title :"
-                    placeholder="Title"
-                    className="mb-4"
-                    {...register("title", { required: true })}
-                />
-                <Input
-                    label="Slug :"
-                    placeholder="Slug"
-                    className="mb-4"
-                    {...register("slug", { required: true })}
-                    onInput={(e) => {
-                        setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
-                    }}
-                />
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
-            </div>
-            <div className="w-1/3 px-2">
-                <Input
-                    label="Featured Image :"
-                    type="file"
-                    className="mb-4"
-                    accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post })}
-                />
-                {post && (
-                    <div className="w-full mb-4">
-                        <img
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-700 px-6 py-8 sm:px-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+              {post ? "Update Post" : "Create New Post"}
+            </h1>
+            <p className="mt-2 text-blue-100">
+              {post ? "Make changes to your existing post" : "Share your thoughts with the world"}
+            </p>
+          </div>
+          
+          <form onSubmit={handleSubmit(submit)} className="p-6 sm:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Main Content Section */}
+              <div className="lg:col-span-2">
+                <div className="space-y-6">
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      Post Details
+                    </h2>
+                    
+                    <div className="space-y-4">
+                      <Input
+                        label="Title"
+                        placeholder="Enter your post title..."
+                        className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        {...register("title", { required: true })}
+                      />
+                      
+                      <Input
+                        label="Slug"
+                        placeholder="post-url-slug"
+                        className="transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        {...register("slug", { required: true })}
+                        onInput={(e) => {
+                          setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
+                        }}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-50 rounded-xl p-6">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                      </svg>
+                      Content
+                    </h2>
+                    
+                    <div className="bg-white rounded-lg border border-gray-200">
+                      <RTE 
+                        label="Write your content here..." 
+                        name="content" 
+                        control={control} 
+                        defaultValue={getValues("content")} 
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Sidebar Section */}
+              <div className="lg:col-span-1">
+                <div className="sticky top-8 space-y-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      Featured Image
+                    </h2>
+                    
+                    <div className="space-y-4">
+                      <Input
+                        label="Upload Image"
+                        type="file"
+                        className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:cursor-pointer cursor-pointer"
+                        accept="image/png, image/jpg, image/jpeg, image/gif"
+                        {...register("image", { required: !post })}
+                      />
+                      
+                      {post && (
+                        <div className="relative group">
+                          <img
                             src={postservice.filePreview(post.featuredImage)}
                             alt={post.title}
-                            className="rounded-lg"
-                        />
+                            className="w-full h-48 object-cover rounded-lg shadow-md transition-transform duration-200 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-200 rounded-lg"></div>
+                        </div>
+                      )}
                     </div>
-                )}
-                <Select
-                    options={["active", "inactive"]}
-                    label="Status"
-                    className="mb-4"
-                    {...register("status", { required: true })}
-                />
-                
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
-                    {post ? "Update" : "Submit"}
-                </Button>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-100">
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Publish Settings
+                    </h2>
+                    
+                    <div className="space-y-4">
+                      <Select
+                        options={["active", "inactive"]}
+                        label="Status"
+                        className="transition-all duration-200 focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        {...register("status", { required: true })}
+                      />
+                      
+                      <Button 
+                        type="submit" 
+                        bgColor={post ? "bg-green-500" : undefined} 
+                        className="w-full bg-slate-400 py-3 px-6 text-black font-semibold rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-opacity-50 focus:ring-blue-300 hover:bg-opacity-90"
+                      >
+                        {post ? "Update" : "Submit"}
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Quick Tips */}
+                  <div className="bg-yellow-50 rounded-xl p-6 border border-yellow-200">
+                    <h3 className="text-sm font-semibold text-yellow-800 mb-2 flex items-center">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Quick Tips
+                    </h3>
+                    <ul className="text-xs text-yellow-700 space-y-1">
+                      <li>• Use engaging titles to attract readers</li>
+                      <li>• Add high-quality featured images</li>
+                      <li>• Keep your content well-structured</li>
+                      <li>• Preview before publishing</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
-        </form>
-    );
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }
   
 export default PostForm

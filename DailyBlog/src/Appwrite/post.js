@@ -16,7 +16,7 @@ export class post{
         
     }
 
-    async createPost({title,slug, content, featuredImage, status, userid}){
+    async createPost({title,slug, content, featuredImage, status, userid, username}){
             try {
                 return await this.database.createDocument(
                     Assets.DatabaseId , 
@@ -27,7 +27,8 @@ export class post{
                     content,
                     featuredImage,
                     status,
-                    userid
+                    userid,
+                    username
                             }
             )
             } catch (error) {
@@ -51,7 +52,7 @@ export class post{
     }
 
 
-    async updatePost(slug, {title, content, featuredImage, status}){
+    async updatePost(slug, {title, content, featuredImage, status, username}){
         try {
             return await this.database.updateDocument(
                 Assets.DatabaseId,
@@ -61,7 +62,8 @@ export class post{
                     title, 
                     content,
                     featuredImage, 
-                    status
+                    status,
+                    username
                 }
             )
         } catch (error) {
@@ -126,18 +128,11 @@ export class post{
         }
     }
 
-    filePreview(fileId){
-       
-            try {
-                 return this.bucket.getFilePreview(
-                     Assets.BucketId,
-                    fileId
-                 )
-            } catch (error) {
-                console.log(error)
-            }
-        }
-    }
+    filePreview(fileId) {
+    if (!fileId) return '/default-image.png'; // fallback image
+    return this.bucket.getFileView(Assets.BucketId, fileId) // ✅ MUST use .href
+}
+}
 
 const postservice = new post();
 export default postservice
