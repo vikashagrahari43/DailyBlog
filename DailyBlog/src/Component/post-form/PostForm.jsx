@@ -4,6 +4,7 @@ import {useSelector} from "react-redux"
 import { useForm } from 'react-hook-form'
 import {Button, Input, RTE , Select } from "../index"
 import  postservice  from '../../Appwrite/post'
+import { ID } from 'appwrite'
 
 function PostForm({post}) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,7 +53,7 @@ function PostForm({post}) {
                 data.featuredImage = fileId;
                 const dbPost = await postservice.createPost({ 
                   ...data, 
-                  userid: userData.$id, 
+                  userid: userData?.$id || ID.unique()  , 
                   username: userData?.name || "Anonymous"
                 });
                  if (dbPost) {
