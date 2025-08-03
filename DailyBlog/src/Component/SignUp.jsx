@@ -27,23 +27,23 @@ function SignUp() {
     }
 
   return (
-    <div className='min-h-screen  bg-gradient-to-br from-gray-200  to-gray-600 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8'>
-        <div className='w-full max-w-md space-y-6'>
-            <div className='bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 sm:p-8'>
+    <div className='min-h-screen bg-gradient-to-br from-gray-200 to-gray-600 flex items-center justify-center px-3 sm:px-4 md:px-6 lg:px-8 py-2 sm:py-4 md:py-8'>
+        <div className='w-full max-w-xs sm:max-w-sm md:max-w-md space-y-4 sm:space-y-6'>
+            <div className='bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl border border-white/20 p-4 sm:p-6 md:p-8'>
                 
                 {/* Logo Section */}
-                <div className="flex justify-center mb-6">
+                <div className="flex justify-center mb-3 sm:mb-4 md:mb-6">
                     <span className="inline-block">
-                        <Logo width='80px' />
+                        <Logo width='60px' className="sm:w-20 md:w-20" />
                     </span>
                 </div>
 
                 {/* Header */}
-                <div className="text-center space-y-2 mb-6">
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+                <div className="text-center space-y-1 sm:space-y-2 mb-4 sm:mb-6">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
                         Sign up to create account
                     </h2>
-                    <p className="text-sm sm:text-base text-gray-600">
+                    <p className="text-xs sm:text-sm md:text-base text-gray-600">
                         Already have an account?&nbsp;
                         <Link 
                             to="/login"
@@ -56,15 +56,15 @@ function SignUp() {
 
                 {/* Error Message */}
                 {error && (
-                    <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                        <p className="text-red-700 text-sm font-medium text-center">
+                    <div className="mb-4 sm:mb-6 bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4">
+                        <p className="text-red-700 text-xs sm:text-sm font-medium text-center">
                             {error}
                         </p>
                     </div>
                 )}
 
                 {/* Form */}
-                <form onSubmit={handleSubmit(create)} className="space-y-5">
+                <form onSubmit={handleSubmit(create)} className="space-y-3 sm:space-y-4 md:space-y-5">
                     <Input 
                         type="text"
                         label="Name"
@@ -90,15 +90,15 @@ function SignUp() {
                     
                     <Button
                         type='submit'
-                        classname='w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-6'
+                        classname='w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-2.5 sm:py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 mt-4 sm:mt-6'
                     >
                         Create Account
                     </Button>
                 </form>
 
                 {/* Terms & Privacy */}
-                <div className="text-center mt-6">
-                    <p className="text-xs text-gray-500">
+                <div className="text-center mt-4 sm:mt-6">
+                    <p className="text-xs text-gray-500 leading-relaxed">
                         By creating an account, you agree to our{' '}
                         <a href="#" className="text-blue-600 hover:underline">
                             Terms of Service
