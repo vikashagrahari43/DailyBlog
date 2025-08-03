@@ -57,7 +57,7 @@ function Post() {
                 {/* Author Info */}
                 <div className="flex items-center">
                   <div className="relative">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-gray-800 to-gray-600 text-white flex items-center justify-center font-bold text-lg sm:text-xl shadow-lg">
                       {post.username?.charAt(0).toUpperCase()}
                     </div>
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>

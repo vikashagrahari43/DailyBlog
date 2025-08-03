@@ -13,7 +13,7 @@ function PostCard({title, $id, featuredImage, username}) {
         
           {/* Author Info */}
           <div className="flex items-center mb-3 sm:mb-4">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold text-sm">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gray-600 text-white flex items-center justify-center font-bold text-sm">
               {username?.charAt(0).toUpperCase()}
             </div>
             <p className="ml-3 text-gray-700 font-medium text-sm sm:text-base">
