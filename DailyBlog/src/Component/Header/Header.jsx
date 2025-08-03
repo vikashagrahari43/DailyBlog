@@ -46,7 +46,7 @@ const handleNavClick = (url) => {
 }
 
   return (
-    <header className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 shadow-lg sticky top-0 z-50 backdrop-blur-sm">
+    <header className="bg-black shadow-lg sticky top-0 z-50 backdrop-blur-sm">
       <Container>
         <nav className="flex justify-between items-center py-4 relative">
           {/* Logo Section */}
