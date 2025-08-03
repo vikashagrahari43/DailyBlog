@@ -2,17 +2,20 @@ import React, { useState } from 'react'
 import auth from '../../Appwrite/login'
 import {useDispatch} from "react-redux"
 import {logout} from "../../Store/LoginState"
+import { useNavigate } from 'react-router-dom'
 
 function Logoutbtn() {
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate
     
   const logouthandler = () => {
             setIsLoading(true)
     
               auth.logout().then(() => {
                      dispatch(logout())
-                   setIsLoading(false)
+                     setIsLoading(false)
+                     navigate("/login")
          })
          .catch(() => {
       setIsLoading(false)
