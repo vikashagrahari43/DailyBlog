@@ -8,11 +8,13 @@ function Logoutbtn() {
   const [isLoading, setIsLoading] = useState(false)
     
   const logouthandler = () => {
-    setIsLoading(true)
-    auth.logout().then(() => {
-      dispatch(logout())
-      setIsLoading(false)
-    }).catch(() => {
+            setIsLoading(true)
+    
+              auth.logout().then(() => {
+                     dispatch(logout())
+                   setIsLoading(false)
+         })
+         .catch(() => {
       setIsLoading(false)
     })
   }
