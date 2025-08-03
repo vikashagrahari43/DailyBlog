@@ -7,17 +7,20 @@ import { useNavigate } from 'react-router-dom'
 function Logoutbtn() {
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
-  const navigate = useNavigate
+  const navigate = useNavigate();
     
   const logouthandler = () => {
             setIsLoading(true)
     
               auth.logout().then(() => {
                      dispatch(logout())
-                     setIsLoading(false)
+                     
                      navigate("/login")
+                    
          })
-         .catch(() => {
+         .catch((error) => {
+         console.error("Logout failed:", error);
+    }).finally(() =>{
       setIsLoading(false)
     })
   }

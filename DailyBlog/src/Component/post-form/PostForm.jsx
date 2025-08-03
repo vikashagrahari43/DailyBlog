@@ -67,8 +67,8 @@ function PostForm({post}) {
                 }
             }
         } catch (error) {
-            console.error("Error submitting post:", error);
-            alert("Something went wrong while submitting the post.");
+            
+            alert(`Failed ${error.message}`);
         } finally {
             setIsSubmitting(false);
         }
