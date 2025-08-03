@@ -150,7 +150,7 @@ function Home() {
           </div>
 
           {/* Posts Grid */}
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3   gap-4 sm:gap-6 md:gap-8'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8'>
             {posts.map((post) => (
               <div key={post.$id} className='group'>
                 <div className="bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-lg border border-white/20 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] sm:hover:scale-[1.03] hover:bg-white/90 hover:-translate-y-1">
