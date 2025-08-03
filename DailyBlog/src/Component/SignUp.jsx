@@ -27,7 +27,7 @@ function SignUp() {
     }
 
   return (
-    <div className='min-h-screen bg-black flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8'>
+    <div className='min-h-screen  bg-gradient-to-br from-gray-200  to-gray-600 flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8'>
         <div className='w-full max-w-md space-y-6'>
             <div className='bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6 sm:p-8'>
                 

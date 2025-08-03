@@ -26,7 +26,7 @@ function Login() {
       }
     }
   return (
-    <div className='min-h-screen flex items-center justify-center w-full bg-black px-2 sm:px-4 py-4 sm:py-8'>
+    <div className='min-h-screen flex items-center justify-center w-full bg-gradient-to-br from-gray-200  to-gray-600 px-2 sm:px-4 py-4 sm:py-8'>
         <div className={`mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 lg:p-10 border border-white/20 shadow-xl sm:shadow-2xl hover:shadow-3xl transition-all duration-500`}>
         
         {/* Logo Section */}
