@@ -16,7 +16,7 @@ export class Auth {
         try {
            const useraccount =  await this.account.create(ID.unique(),email, password, name)
             if (useraccount) {
-                return this.login({email, password})
+                return await this.login({email, password})
             } else {
                 return useraccount;
             }

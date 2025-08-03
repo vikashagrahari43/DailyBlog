@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import postservice from '../Appwrite/post'
 import { Container, PostCard } from '../Component'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 function Home() {
   const [posts, setPosts] = useState([])
@@ -14,13 +15,16 @@ function Home() {
   const loginpage = () => {
     navigate("/login")
   }
+  const authstatus = useSelector((state) => state.auth.status)
   
   useEffect(() => {
-    postservice.getAllPost().then((posts) => {
-      if (posts) {
+    if (authstatus){
+      postservice.getAllPost().then((posts) => {
         setPosts(posts.documents)
-      }
-    })
+      })
+    } else {
+      undefined
+    }
   }, [])
 
   if (posts.length === 0) {

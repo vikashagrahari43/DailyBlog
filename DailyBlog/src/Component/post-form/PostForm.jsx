@@ -13,9 +13,10 @@ function PostForm({post}) {
             title : post?.title || "",
             slug : post?.$id || "",
             content : post?. content || "",
-            status : post?.status || "active"
+            status : post?.status || "active",
+            username : post?.username || "Unknown"
         },
-    }); 
+    });  
 
     const navigate = useNavigate()
     const userData = useSelector((state) => state.auth.userData)
@@ -25,14 +26,10 @@ function PostForm({post}) {
     const submit = async (data) => {
         setIsSubmitting(true);
         try {
-            let file = null;
-
-            // Upload image if provided
-            if (data.image && data.image[0]) {
-                file = await postservice.uploadFile(data.image[0]);
-            }
-
+            
+            
             if (post) {
+              const file = data.image[0] ? await postservice.uploadFile(data.image[0]) : null;
                 // If updating an existing post
                 if (file) {
                     await postservice.deleteFile(post.featuredImage);
@@ -48,26 +45,27 @@ function PostForm({post}) {
                     navigate(`/post/${dbPost.$id}`);
                 }
             } else {
-                // If creating a new post
-                if (!file) {
-                    alert("Please upload an image");
-                    return;
-                }
+                const file = await postservice.uploadFile(data.image[0]);
 
-                const dbPost = await postservice.createPost({
-                    ...data,
-                    featuredImage: file.$id,
-                    userid: userData.$id,
-                    username: userData?.name || "Anonymous", // ✅ add username here
-                    slug: slugTransform(data.title || "new-post"), // ensure slug always exists
+                if (file) {
+                     const fileId = file.$id;
+                data.featuredImage = fileId;
+                const dbPost = await postservice.createPost({ 
+                  ...data, 
+                  userid: userData.$id, 
+                  username: userData?.name || "Anonymous"
                 });
-
-                if (dbPost) {
+                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`);
                 }
+
+                } else {
+                  alert("Please upload an image");
+                    return;
+                }
+                
             }
         } catch (error) {
-            
             alert(`Failed ${error.message}`);
         } finally {
             setIsSubmitting(false);
