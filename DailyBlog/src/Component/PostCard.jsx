@@ -9,7 +9,7 @@ function PostCard({title, $id, featuredImage, username}) {
   
    return (
     <Link to={`/post/${$id}`} className="group block">
-      <div className="w-full bg-gray-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1">
+      <div className="w-full bg-gray-100 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200 hover:border-gray-300 transform">
         
           {/* Author Info */}
           <div className="flex items-center mb-3 sm:mb-4">
@@ -26,7 +26,7 @@ function PostCard({title, $id, featuredImage, username}) {
           <img
             src={imageUrl}
             alt={title}
-            className="w-full h-48 sm:h-52 md:h-56 lg:h-48 xl:h-52 object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-48 sm:h-52 md:h-56 lg:h-48 xl:h-52 object-cover transition-transform duration-500 group-hover:scale-100"
           />
         </div>
 

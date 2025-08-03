@@ -13,7 +13,7 @@ function AllPost() {
     }, [])
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50 py-8 px-4'>
+    <div className='min-h-screen bg-gradient-to-br from-gray-200  to-gray-600 py-8 px-4'>
         <Container>
             <div className="space-y-8">
                 {/* Header Section */}
