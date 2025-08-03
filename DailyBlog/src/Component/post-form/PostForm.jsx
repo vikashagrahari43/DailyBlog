@@ -99,7 +99,7 @@ function PostForm({post}) {
     <div className="min-h-screen bg-gray-800 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-700 px-6 py-8 sm:px-8">
+          <div className="bg-gradient-to-r from-gray-200  to-gray-600 px-6 py-8 sm:px-8">
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
               {post ? "Update Post" : "Create New Post"}
             </h1>
