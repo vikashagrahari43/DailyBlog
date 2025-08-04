@@ -98,7 +98,18 @@ function PostForm({post}) {
     }, [watch, setValue, slugTransform ])
 
       if (!userData) {
-  return <div className="md:text-xl text-lg md:font-extrabold">It takes some time to load your data! Please refresh!! Sorry for the inconvenience.</div>;
+  return  <div class="fixed inset-0 w-screen h-screen bg-gradient-to-br from-gray-500  to-gray-800 flex items-center justify-center p-5 z-50">
+        <div class="text-center text-white max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl">
+            <div class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight mb-6 sm:mb-8 animate-pulse">
+                It takes some time to load your data! 
+                <span class="text-yellow-400">Please refresh!!</span> 
+                Sorry for the inconvenience.
+            </div>
+            
+            
+            <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 border-4 border-white/30 border-t-yellow-400 rounded-full animate-spin mx-auto"></div>
+        </div>
+    </div>
 }
   return (
     <div className="min-h-screen bg-gray-800 py-8 px-4 sm:px-6 lg:px-8">
