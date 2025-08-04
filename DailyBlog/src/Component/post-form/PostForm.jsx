@@ -98,7 +98,7 @@ function PostForm({post}) {
     }, [watch, setValue, slugTransform ])
 
       if (!userData) {
-  return <div>It takes some time to load your data! Please refresh!! Sorry for the inconvenience.</div>;
+  return <div className="md:text-xl text-lg md:font-extrabold">It takes some time to load your data! Please refresh!! Sorry for the inconvenience.</div>;
 }
   return (
     <div className="min-h-screen bg-gray-800 py-8 px-4 sm:px-6 lg:px-8">
