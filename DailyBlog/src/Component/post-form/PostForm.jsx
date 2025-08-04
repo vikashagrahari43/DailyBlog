@@ -4,15 +4,17 @@ import {useSelector} from "react-redux"
 import { useForm } from 'react-hook-form'
 import {Button, Input, RTE , Select } from "../index"
 import  postservice  from '../../Appwrite/post'
-import { ID } from 'appwrite'
+// import { ID } from 'appwrite'
 
 function PostForm({post}) {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+    const userData = useSelector((state) => state.auth.userData)
+  
     const {handleSubmit, watch, getValues, setValue, register, control } = useForm({
         defaultValues : {
             title : post?.title || "",
             slug : post?.$id || "",
+            userid:userData?.$id || "" ,
             content : post?. content || "",
             status : post?.status || "active",
             username : post?.username || "Unknown"
@@ -20,15 +22,12 @@ function PostForm({post}) {
     });  
 
     const navigate = useNavigate()
-    const userData = useSelector((state) => state.auth.userData)
 
-    // console.log(post.featuredImage)
+
 
     const submit = async (data) => {
         setIsSubmitting(true);
         try {
-            
-            
             if (post) {
               const file = data.image[0] ? await postservice.uploadFile(data.image[0]) : null;
                 // If updating an existing post
@@ -57,6 +56,7 @@ function PostForm({post}) {
                   userid: userData.$id  , 
                   username: userData?.name || "Anonymous"
                 });
+                console.log("User id ",dbPost.userid)
                 
                  if (dbPost) {
                     navigate(`/post/${dbPost.$id}`);
@@ -64,11 +64,13 @@ function PostForm({post}) {
 
                 } else {
                   alert("Please upload an image");
-                    return;
+                  return;
                 }
                 
-            }
-        } catch (error) {
+              }
+            } catch (error) {
+      
+             console.log(error);
             alert(`Failed ${error.message}`);
         } finally {
             setIsSubmitting(false);
@@ -95,7 +97,9 @@ function PostForm({post}) {
         return () => subscription.unsubscribe()
     }, [watch, setValue, slugTransform ])
 
-    
+      if (!userData) {
+  return <div>It takes some time to load your data! Please refresh!! Sorry for the inconvenience.</div>;
+}
   return (
     <div className="min-h-screen bg-gray-800 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
