@@ -3,7 +3,7 @@ import {useForm} from "react-hook-form"
 import {Link , useNavigate} from "react-router-dom"
 import {useDispatch} from "react-redux"
 import  auth  from '../Appwrite/login'
-import { login as authlogin } from '../Store/LoginState'
+import { login } from '../Store/LoginState'
 import {Button , Input , Logo} from "./index"
 
 function Login() {
@@ -12,14 +12,16 @@ function Login() {
     const dispatch = useDispatch()
     const [error , setError] = useState("");
 
-    const login = async(data) => {
+    const signin = async(data) => {
       setError("")
       try {
        const session = await auth.login(data)
        if (session) {
         const userData = await auth.getCurrentUser()
-          if(userData) dispatch(authlogin(userData));
-          navigate("/")
+          if(userData){
+             dispatch(login( { userData } ));
+          }
+          navigate("/");
        }
       } catch (error) {
         setError(error.message)
@@ -72,7 +74,7 @@ function Login() {
         )}
         
         {/* Login Form */}
-        <form onSubmit={handleSubmit(login)} className="space-y-4 sm:space-y-6">
+        <form onSubmit={handleSubmit(signin)} className="space-y-4 sm:space-y-6">
           <div className="space-y-3 sm:space-y-4">
             <Input 
               label="Email Address"

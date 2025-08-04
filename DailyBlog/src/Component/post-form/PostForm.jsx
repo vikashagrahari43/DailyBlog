@@ -51,11 +51,13 @@ function PostForm({post}) {
                 if (file) {
                      const fileId = file.$id;
                 data.featuredImage = fileId;
+                
                 const dbPost = await postservice.createPost({ 
                   ...data, 
-                  userid: userData?.$id || ID.unique()  , 
+                  userid: userData.$id  , 
                   username: userData?.name || "Anonymous"
                 });
+                
                  if (dbPost) {
                     navigate(`/post/${dbPost.$id}`);
                 }

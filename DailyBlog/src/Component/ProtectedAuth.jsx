@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 
 function ProtectedAuth({children , authentication = true }) {
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     const [loader , setloader] = useState(true)
     const authStatus = useSelector(state => state.auth.status)
     useEffect(() =>{
@@ -14,7 +14,7 @@ function ProtectedAuth({children , authentication = true }) {
             navigate("/")
         }
         setloader(false)
-    }, [authentication])
+    }, [authentication, authStatus, navigate])
   return loader ? <div>Loading ... </div> : <>{children}</>
     
 }
