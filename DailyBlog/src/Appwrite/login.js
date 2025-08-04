@@ -27,8 +27,10 @@ export class Auth {
 
     async login ({email, password}){
         try {
-           return await this.account.createEmailPasswordSession(email, password);
-           
+           const session = await this.account.createEmailPasswordSession(email, password);
+           if (session) {
+                return await this.getCurrentUser();
+            }
         } catch (error) {
             throw error
         }
